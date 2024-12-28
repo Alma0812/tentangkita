@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrapbook untuk Kamu</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #fce4ec;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scrapbook {
+            width: 300px;
+            height: 400px;
+            background: #8B4513;
+            border-radius: 5px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .cover {
+            width: 100%;
+            height: 100%;
+            background: #A0522D;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            backface-visibility: hidden;
+            transform-origin: right;
+            transition: transform 0.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .scrapbook.open .cover {
+            transform: rotateY(-180deg);
+        }
+
+        .pages {
+            width: 100%;
+            height: 100%;
+            background: #FFF8DC;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .page {
+            width: 90%;
+            height: 85%;
+            background: white;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page img {
+            width: 80%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .page p {
+            text-align: center;
+            margin: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .navigation button {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navigation button:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Snowfall Effect */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                top: -10px;
+                opacity: 1;
+                transform: translateX(0);
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+                transform: translateX(50px);
+            }
+        }
+
+        /* Snowflake size and animation speed */
+        .snowflake:nth-child(1) { width: 5px; height: 5px; animation-duration: 7s; left: 10%; }
+        .snowflake:nth-child(2) { width: 8px; height: 8px; animation-duration: 10s; left: 20%; }
+        .snowflake:nth-child(3) { width: 6px; height: 6px; animation-duration: 9s; left: 30%; }
+        .snowflake:nth-child(4) { width: 7px; height: 7px; animation-duration: 8s; left: 40%; }
+        .snowflake:nth-child(5) { width: 9px; height: 9px; animation-duration: 11s; left: 50%; }
+        .snowflake:nth-child(6) { width: 4px; height: 4px; animation-duration: 6s; left: 60%; }
+        .snowflake:nth-child(7) { width: 10px; height: 10px; animation-duration: 12s; left: 70%; }
+        .snowflake:nth-child(8) { width: 5px; height: 5px; animation-duration: 7s; left: 80%; }
+        .snowflake:nth-child(9) { width: 6px; height: 6px; animation-duration: 9s; left: 90%; }
+    </style>
+</head>
+<body>
+    <!-- Audio Element -->
+    <audio id="backgroundMusic" loop>
+        <source src="musik.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="container">
+        <div class="scrapbook" id="scrapbook">
+            <div class="cover" id="cover">Klik untuk membuka</div>
+            <div class="pages">
+                <div class="page" id="page1">
+                    <img src="gambar1.jpg" alt="Foto 1">
+                    <p>Kenangan indah bersama kamu</p>
+                </div>
+                <div class="page hidden" id="page2">
+                    <img src="gambar7.jpg" alt="Foto 2">
+                    <p>Hari yang penuh kebahagiaan</p>
+                </div>
+                <div class="page hidden" id="page3">
+                    <img src="gambar5.jpg" alt="Foto 3">
+                    <p>Saat kita bersama menikmati matahari terbenam</p>
+                </div>
+                <div class="page hidden" id="page4">
+                    <img src="gambar6.jpg" alt="Foto 4">
+                    <p>Kebersamaan yang tak terlupakan</p>
+                </div>
+                <div class="page hidden" id="page5">
+                    <img src="gambar4.jpg" alt="Foto 5">
+                    <p>Tertawa bersama, hati penuh sukacita</p>
+                </div>
+                <div class="page hidden" id="page6">
+                    <img src="gambar8.jpg" alt="Foto 6">
+                    <p>Setiap detik bersamamu adalah anugerah</p>
+                </div>
+                <div class="page hidden" id="page7">
+                    <img src="gambar9.jpg" alt="Foto 7">
+                    <p>Hari yang penuh cinta dan tawa</p>
+                </div>
+                <div class="page hidden" id="page8">
+                    <img src="gambar3.jpg" alt="Foto 8">
+                    <p>Bersamamu membuat dunia terasa lebih indah</p>
+                </div>
+                <div class="page hidden" id="page9">
+                    <img src="gambar2.jpg" alt="Foto 9">
+                    <p>Kamu adalah kebahagiaanku</p>
+                </div>                
+            </div>
+        </div>
+
+        <div class="navigation hidden" id="navigation">
+            <button id="prev">&#8592; Sebelumnya</button>
+            <button id="next">Selanjutnya &#8594;</button>
+        </div>
+    </div>
+
+    <script>
+        const scrapbook = document.getElementById('scrapbook');
+        const cover = document.getElementById('cover');
+        const navigation = document.getElementById('navigation');
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+        const pages = document.querySelectorAll('.page');
+        const music = document.getElementById('backgroundMusic'); // Audio element
+        let currentPage = 0;
+
+        cover.addEventListener('click', () => {
+            scrapbook.classList.add('open');
+            cover.style.display = 'none';
+            navigation.classList.remove('hidden');
+            music.play(); // Start playing music when scrapbook is opened
+            createSnowflakes(); // Create snowflakes when opened
+        });
+
+        function updatePages() {
+            pages.forEach((page, index) => {
+                page.classList.toggle('hidden', index !== currentPage);
+            });
+        }
+
+        prev.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                updatePages();
+            }
+        });
+
+        next.addEventListener('click', () => {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                updatePages();
+            }
+        });
+
+        function createSnowflakes() {
+            for (let i = 0; i < 20; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.style.left = `${Math.random() * 100}%`; // Random horizontal position
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        updatePages();
+    </script>
+</body>
+</html>
